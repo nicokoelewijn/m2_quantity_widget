@@ -2,7 +2,7 @@
     "name": "nkdev/quantity-widget",
     "description": "A Magento 2 module for AJAX quantity update",
     "type": "magento2-module",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "license": "OSL-3.0",
     "require": {
         "php": "^7.3||^8.1",
