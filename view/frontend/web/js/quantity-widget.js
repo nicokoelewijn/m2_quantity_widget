@@ -1,11 +1,9 @@
 define([
     'jquery',
-    'Magento_Customer/js/customer-data',
-    'Magento_Ui/js/model/messageList',
-    'mage/decorate',
-    'mage/collapsible',
-    'mage/cookies'
-], function ($, customerData, messageList) {
+    'Magento_Checkout/js/action/get-totals',
+    'Magento_Customer/js/customer-data'
+
+], function ($, getTotalsAction, customerData) {
     'use strict';
 
     return function (config, element) {
@@ -15,35 +13,28 @@ define([
         function updateCart(qty) {
             $(element).find('.quantity_input_wrapper').addClass('loading');
 
+            var form = $('form#form-validate');
             $.ajax({
-                url: `/checkout/sidebar/updateItemQty/`,
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    item_id: config.itemId,
-                    item_qty: qty,
-                    form_key: $.mage.cookies.get('form_key')
-                },
-                success: function (response) {
-                    if (response.success) {
-                        // Cart updated successfully
-                        customerData.reload(['cart'], true);
-                        $(element).find('.quantity_input_wrapper').removeClass('warning'); // Remove warning class
-                        $(element).parent().find('.quantity_input__error-message').html(''); // Remove error message
-                    } else {
-                        // Handle specific error message
-                        if (response.error_message) {
-                            $(element).parent().find('.quantity_input__error-message').html(response.error_message);
-                            $(element).find('.quantity_input_wrapper').addClass('warning'); // Add warning class
-                        }
-                    }
+                url: form.attr('action'),
+                data: form.serialize(),
+                showLoader: true,
+                success: function (res) {
+                    var parsedResponse = $.parseHTML(res);
+                    var result = $(parsedResponse).find("#form-validate");
+                    var sections = ['cart'];
+
+                    $("#form-validate").replaceWith(result);
+
+                    // The mini cart reloading
+                    customerData.reload(sections, true);
+
+                    // The totals summary block reloading
+                    var deferred = $.Deferred();
+                    getTotalsAction([], deferred);
                 },
                 error: function (xhr, status, error) {
-                    $(element).find('.quantity_input__error-message').text(response.error_message);
-                    return false;
-                },
-                complete: function () {
-                    $(element).find('.quantity_input_wrapper').removeClass('loading'); // Remove loading class after AJAX request
+                    var err = eval("(" + xhr.responseText + ")");
+                    console.log(err.Message);
                 }
             });
         }
