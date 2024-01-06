@@ -10,7 +10,7 @@ define([
         var qtyElement = $(element).find('.qty');
         var originalValue = qtyElement.val(); // Store original value
 
-        function updateCart(qty) {
+        function updateCart() {
             $(element).find('.quantity_input_wrapper').addClass('loading');
 
             var form = $('form#form-validate');
@@ -41,7 +41,7 @@ define([
             var currentQty = parseInt(qtyElement.val(), 10);
             var newQty = currentQty + adjustment;
             qtyElement.val(newQty);
-            updateCart(newQty);
+            updateCart();
         }
 
         function setupEventHandlers() {
@@ -55,10 +55,8 @@ define([
 
             qtyElement.on('input', function () {
                 clearTimeout(debounceTimer);
-                var qty = $(this).val();
-
                 debounceTimer = setTimeout(function () {
-                    updateCart(qty);
+                    updateCart();
                 }, 500); // 500ms delay
             }).on('blur', function () {
                 if ($(this).hasClass('warning')) {

@@ -4,19 +4,7 @@ namespace Nkdev\QuantityWidget\Block;
 
 class QuantityInput extends \Magento\Framework\View\Element\Template
 {
-    protected $value;
     protected $_parentBlock;
-
-    public function setItem($item)
-    {
-        $this->value = $item;
-        return $this;
-    }
-
-    public function getItem()
-    {
-        return $this->value;
-    }
 
     public function setParentBlock($block)
     {
@@ -27,5 +15,10 @@ class QuantityInput extends \Magento\Framework\View\Element\Template
     public function getParentBlock()
     {
         return $this->_parentBlock;
+    }
+
+    public function getQuoteId()
+    {
+        return $this->getData('quote_id');
     }
 }
