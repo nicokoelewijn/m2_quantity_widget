@@ -16,7 +16,7 @@ define([
             $(element).find('.quantity_input_wrapper').addClass('loading');
 
             $.ajax({
-                url: `/default/checkout/sidebar/updateItemQty/`,
+                url: `/checkout/sidebar/updateItemQty/`,
                 type: 'POST',
                 dataType: 'json',
                 data: {
