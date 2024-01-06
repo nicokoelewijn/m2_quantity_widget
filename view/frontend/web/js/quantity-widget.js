@@ -2,13 +2,13 @@ define([
     'jquery',
     'Magento_Checkout/js/action/get-totals',
     'Magento_Customer/js/customer-data'
-
 ], function ($, getTotalsAction, customerData) {
     'use strict';
 
     return function (config, element) {
         var debounceTimer;
-        var originalValue = $(element).find('.qty').val(); // Store original value
+        var qtyElement = $(element).find('.qty');
+        var originalValue = qtyElement.val(); // Store original value
 
         function updateCart(qty) {
             $(element).find('.quantity_input_wrapper').addClass('loading');
@@ -19,53 +19,54 @@ define([
                 data: form.serialize(),
                 showLoader: true,
                 success: function (res) {
-                    var parsedResponse = $.parseHTML(res);
-                    var result = $(parsedResponse).find("#form-validate");
-                    var sections = ['cart'];
-
-                    $("#form-validate").replaceWith(result);
-
-                    // The mini cart reloading
-                    customerData.reload(sections, true);
-
-                    // The totals summary block reloading
-                    var deferred = $.Deferred();
-                    getTotalsAction([], deferred);
+                    updateCartUI(res);
                 },
-                error: function (xhr, status, error) {
-                    var err = eval("(" + xhr.responseText + ")");
-                    console.log(err.Message);
+                error: function (xhr) {
+                    console.error("Error updating cart:", xhr.responseText);
                 }
             });
         }
 
+        function updateCartUI(res) {
+            var parsedResponse = $.parseHTML(res);
+            var result = $(parsedResponse).find("#form-validate");
+            $("#form-validate").replaceWith(result);
+
+            // Reload mini cart and totals summary block
+            customerData.reload(['cart'], true);
+            getTotalsAction([], $.Deferred());
+        }
+
         function adjustQty(adjustment) {
-            var currentQty = parseInt($(element).find('.qty').val());
+            var currentQty = parseInt(qtyElement.val(), 10);
             var newQty = currentQty + adjustment;
-            $(element).find('.qty').val(newQty);
+            qtyElement.val(newQty);
             updateCart(newQty);
         }
 
-        $(element).find('.increase').on('click', function () {
-            adjustQty(1);
-        });
+        function setupEventHandlers() {
+            $(element).find('.increase').on('click', function () {
+                adjustQty(1);
+            });
 
-        $(element).find('.decrease').on('click', function () {
-            adjustQty(-1);
-        });
+            $(element).find('.decrease').on('click', function () {
+                adjustQty(-1);
+            });
 
-        $(element).find('.qty').on('input', function () {
-            clearTimeout(debounceTimer);
-            var qty = $(this).val();
+            qtyElement.on('input', function () {
+                clearTimeout(debounceTimer);
+                var qty = $(this).val();
 
-            debounceTimer = setTimeout(function () {
-                updateCart(qty);
-            }, 500); // 500ms delay
-        }).on('blur', function () {
-            if ($(this).hasClass('warning')) {
-                // If still has warning class, revert to original value
-                $(this).val(originalValue).removeClass('warning');
-            }
-        });
+                debounceTimer = setTimeout(function () {
+                    updateCart(qty);
+                }, 500); // 500ms delay
+            }).on('blur', function () {
+                if ($(this).hasClass('warning')) {
+                    $(this).val(originalValue).removeClass('warning');
+                }
+            });
+        }
+
+        setupEventHandlers();
     };
 });
