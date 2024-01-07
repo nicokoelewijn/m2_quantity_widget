@@ -2,7 +2,9 @@
 
 namespace Nkdev\QuantityWidget\Block;
 
-class QuantityInput extends \Magento\Framework\View\Element\Template
+use Magento\Framework\View\Element\Template;
+
+class CartQuantityInput extends Template
 {
     protected $_parentBlock;
 

@@ -2,7 +2,7 @@
 $parentBlock = $block->getParentBlock();
 $_item = $parentBlock->getItem();
 ?>
-<div data-mage-init='{"Nkdev_QuantityWidget/js/quantity-widget": {}}'>
+<div data-mage-init='{"Nkdev_QuantityWidget/js/cart-quantity-widget": {}}'>
     <div class="quantity_input_wrapper">
         <button class="decrease" type="button">-</button>
         <input
@@ -10,8 +10,8 @@ $_item = $parentBlock->getItem();
             data-role="cart-item-qty"
             data-validate="{required:true,'validate-greater-than-zero':true}"
             id="<?= $block->escapeHtml($_item->getSku()) ?>"
-            name="cart[<?= $block->escapeHtmlAttr($_item->getId()) ?>][qty]" data-cart-item-
-            size="4"
+            name="cart[<?= $block->escapeHtmlAttr($_item->getId()) ?>][qty]"
+            data-cart-item-size="4"
             title="<?= $block->escapeHtml(__('Qty')) ?>"
             type=" number"
             value="<?= $block->escapeHtmlAttr($parentBlock->getQty()) ?>"

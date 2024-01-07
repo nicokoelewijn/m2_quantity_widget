@@ -1,0 +1,25 @@
+<?php
+$parentBlock = $block->getParentBlock();
+$defaultQty = ($parentBlock->getProductDefaultQty() * 1) === 0 ? 1 : ($parentBlock->getProductDefaultQty() * 1);
+?>
+<div data-mage-init='{"Nkdev_QuantityWidget/js/product-quantity-widget": {}}'>
+    <div class="product-qty">
+        <label class="label" for="qty">
+            <span><?= __('Qty') ?></span>
+        </label>
+        <div class="control custom-qty">
+            <button class="decrease" type="button">-</button>
+            <input type="number"
+                name="qty"
+                id="qty"
+                min="1"
+                value="<?= $defaultQty ?>"
+                title="<?= $block->escapeHtmlAttr(__('Qty')) ?>"
+                class="input-text qty"
+                data-validate="<?= $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
+            />
+            <button class="increase" type="button">+</button>
+        </div>
+    </div>
+    <span class="quantity_input__error-message"></span>
+</div>
