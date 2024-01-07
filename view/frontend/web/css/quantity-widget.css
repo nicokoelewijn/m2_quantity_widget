@@ -1,0 +1,56 @@
+
+.quantity_input_wrapper {
+    border-radius: 5px;
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.quantity_input_wrapper.loading {
+    opacity: 0.5;
+}
+
+.quantity_input_wrapper.warning {
+    border: 1px solid #c41b14;
+
+}
+
+.quantity_input_wrapper.warning input {
+    color: #c41b14;
+}
+
+.quantity_input_wrapper.warning button {
+    color: #c41b14;
+}
+
+.quantity_input_wrapper.error {
+    border: 1px solid #c41b14;
+}
+
+.quantity_input_wrapper button {
+    color: #123663;
+    cursor: pointer;
+    background-color: transparent;
+    font-size: 21px;
+    font-weight: 600;
+}
+
+.quantity_input_wrapper input.qty {
+    background-color: #e8f6fb;
+    border: none;
+    text-align: center;
+}
+
+.product-view .product-qty {
+    border-color: transparent;
+}
+
+.quantity_input__error-message {
+    color: #c41b14;
+    font-size: 12px;
+    margin-top: 5px;
+    text-align: left;
+    width: 150px;
+    display: block;
+}
