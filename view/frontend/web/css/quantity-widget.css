@@ -9,7 +9,6 @@
 
 .quantity_input_wrapper .control.custom-qty {
     border: 1px solid #123663;
-    max-width: 130px;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -72,4 +71,9 @@
     text-align: left;
     width: 150px;
     display: block;
+}
+
+.cart.table-wrapper .col.qty .input-text,
+.cart.table-wrapper .col.qty input.qty {
+    margin-top: 0;
 }
