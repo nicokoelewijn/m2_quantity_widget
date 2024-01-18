@@ -58,6 +58,7 @@
     height: 35px;
     font-size: 13px;
     border-radius: 3px;
+    max-width: 42px;
 }
 
 .product-view .product-qty {
